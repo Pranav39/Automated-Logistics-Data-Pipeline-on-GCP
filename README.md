@@ -1,5 +1,4 @@
 # Automated-Logistics-Data-Pipeline-on-GCP
-# Hive Load Airflow DAG for Logistics Data on GCP Dataproc
 
 ## Overview
 
