@@ -71,12 +71,48 @@ This pipeline is designed to handle **daily logistics data** uploads. It runs on
 ---
 
 ## Workflow Diagram
-[SENSE: Wait for File in GCS] 
-      → [CREATE: Hive Database] 
-      → [CREATE: Hive Table] 
-      → [CREATE: Partitioned Hive Table] 
-      → [LOAD: Insert with Partitioning] 
-      → [ARCHIVE: Move Processed Files]
+
+                +-----------------------------+
+                | Upload daily logistics files |
+                | to GCS input bucket          |
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | GCSObjectsWithPrefix        |
+                | ExistenceSensor (waits)     |
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | Dataproc Hive Job: Create   |
+                | logistics_db database       |
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | Dataproc Hive Job: Create   |
+                | external logistics_data table|
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | Dataproc Hive Job: Create   |
+                | logistics_data_partitioned  |
+                | partitioned table           |
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | Dataproc Hive Job: Load data|
+                | into partitioned table      |
+                +--------------+--------------+
+                               |
+                               v
+                +--------------+--------------+
+                | BashOperator: Move processed|
+                | files to archive bucket     |
+                +-----------------------------+
 
 ---
 
