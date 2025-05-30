@@ -41,20 +41,21 @@ This pipeline is designed to handle **daily logistics data** uploads. It runs on
 
 ## Architecure
 
-+---------------------+       +----------------------+       +----------------------+
++--------------------+       +----------------------+       +---------------------+
 | Google Cloud Storage|       |    Cloud Composer    |       |   Dataproc Cluster   |
 |  (Input Bucket)     | <---> |   (Airflow DAG)      | <---> | (Hive Jobs Executed) |
-| logistics_raw_data  |       | - Sensor checks file |       |                      |
-|                     |       | - Submit Hive jobs   |       |                      |
-+---------------------+       | - Archive files      |       +----------------------+
-                              +----------------------+
-                                         |
-                                         v
-                            +----------------------------+
-                            | Google Cloud Storage       |
-                            | (Archive Bucket)           |
-                            | logistics_archive_data     |
-                            +----------------------------+
+| logistics_raw_data  |       | - Sensor checks file |       |                     |
+|                    |       | - Submit Hive jobs   |       |                     |
++--------------------+       | - Archive files      |       +---------------------+
+                             +----------------------+
+                                    |
+                                    v
+                       +---------------------------+
+                       | Google Cloud Storage       |
+                       | (Archive Bucket)           |
+                       | logistics_archive_data     |
+                       +---------------------------+
+
 
 ---
 
